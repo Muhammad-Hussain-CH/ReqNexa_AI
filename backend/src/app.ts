@@ -8,6 +8,7 @@ import { healthRouter } from "./routes/health";
 import { projectsRouter } from "./routes/projects.routes";
 import { chatRouter } from "./routes/chat.routes";
 import { requirementRouter } from "./routes/requirement.routes";
+import { documentRouter } from "./routes/document.routes";
 
 export function createApp(): Application {
   const app = express();
@@ -25,6 +26,7 @@ export function createApp(): Application {
   app.use("/api/projects", projectsRouter);
   app.use("/api/chat", chatRouter);
   app.use("/api/requirements", requirementRouter);
+  app.use("/api/documents", documentRouter);
 
   app.use((req: Request, res: Response) => {
     res.status(404).json({ error: "Not Found" });

@@ -1,7 +1,7 @@
 import { GeminiService, ChatTurn } from "./gemini.service";
 import { Db } from "mongodb";
 import { pgPool } from "../config/database";
-import { createConversation, saveMessage, getLastMessages, getMessages } from "../models/conversation.model";
+import { createConversation, saveMessage, getLastMessages, getMessages, getConversationsByUser } from "../models/conversation.model";
 import { ChatMessage, Conversation } from "../types/models";
 import { ProjectTypePrompt } from "../utils/prompt-templates";
 
@@ -105,4 +105,9 @@ export async function resumeConversationService(db: Db, conversation_id: string)
   const bot = await gemini.generateChatResponse(turns, "other");
   await saveMessage(db, { conversation_id, role: "assistant", content: bot, metadata: null });
   return { message: bot };
+}
+
+export async function getConversationsService(db: Db, user_id: string, project_id: string | null) {
+  const conversations = await getConversationsByUser(db, user_id, project_id);
+  return { conversations };
 }

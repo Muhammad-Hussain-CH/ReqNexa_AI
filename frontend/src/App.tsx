@@ -6,6 +6,7 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import Projects from "./pages/Projects";
 import ProjectDetail from "./pages/ProjectDetail";
+import Documents from "./pages/Documents";
 import Chat from "./pages/Chat";
 
 export default function App() {
@@ -26,6 +27,10 @@ export default function App() {
       <Route
         path="/projects/:id"
         element={<ProtectedRoute><ProjectDetail /></ProtectedRoute>}
+      />
+      <Route
+        path="/projects/:id/documents"
+        element={<ProtectedRoute><Documents /></ProtectedRoute>}
       />
       <Route
         path="/chat/:id"

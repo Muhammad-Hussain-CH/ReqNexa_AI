@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { z } from "zod";
 import { connectWithRetry } from "../config/mongodb";
-import { startConversationService, sendMessageService, getConversationService, resumeConversationService } from "../services/chat.service";
+import { startConversationService, sendMessageService, getConversationService, resumeConversationService, getConversationsService } from "../services/chat.service";
 
 const startSchema = z.object({
   project_id: z.string().uuid().nullable().optional(),
@@ -65,6 +65,18 @@ export async function resumeConversation(req: Request, res: Response) {
     const conversation_id = z.string().parse(req.params.conversation_id);
     const db = await connectWithRetry();
     const result = await resumeConversationService(db, conversation_id);
+    res.json(result);
+  } catch (err: any) {
+    res.status(400).json({ error: err.message || "Bad Request" });
+  }
+}
+
+export async function listConversations(req: Request, res: Response) {
+  try {
+    if (!req.user?.id) return res.status(401).json({ error: "Unauthorized" });
+    const project_id = z.string().uuid().optional().nullable().safeParse(req.query.project_id).success ? (req.query.project_id as string | null) : null;
+    const db = await connectWithRetry();
+    const result = await getConversationsService(db, req.user.id, project_id || null);
     res.json(result);
   } catch (err: any) {
     res.status(400).json({ error: err.message || "Bad Request" });

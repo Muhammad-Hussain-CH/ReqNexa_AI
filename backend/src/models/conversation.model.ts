@@ -36,3 +36,14 @@ export async function getLastMessages(db: Db, conversation_id: string, limit = 1
     .toArray();
   return docs.reverse() as ChatMessage[];
 }
+
+export async function getConversationsByUser(db: Db, user_id: string, project_id: string | null): Promise<Conversation[]> {
+  const col = getCollection<Conversation>(db, CONVERSATIONS);
+  const filter: any = { user_id };
+  if (project_id !== null) filter.project_id = project_id;
+  const docs = await col
+    .find(filter)
+    .sort({ updated_at: -1 })
+    .toArray();
+  return docs as Conversation[];
+}
