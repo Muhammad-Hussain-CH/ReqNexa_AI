@@ -1,11 +1,8 @@
 import { Pool } from "pg";
 import { env } from "../lib/env";
 
-const pool = env.DATABASE_URL
-  ? new Pool({
-      connectionString: env.DATABASE_URL,
-      ssl: { rejectUnauthorized: false },
-    })
+const pgPool = env.DATABASE_URL
+  ? new Pool({ connectionString: env.DATABASE_URL, ssl: { rejectUnauthorized: false } })
   : new Pool({
       host: env.POSTGRES_HOST,
       port: env.POSTGRES_PORT,
@@ -14,7 +11,8 @@ const pool = env.DATABASE_URL
       database: env.POSTGRES_DB,
     });
 
-export const pg = {
-  query: (text: string, params?: any[]) => pool.query(text, params),
-  pool,
-};
+pgPool.on("error", (err) => {
+  console.error("PostgreSQL pool error", err);
+});
+
+export { pgPool };

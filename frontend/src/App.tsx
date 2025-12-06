@@ -1,23 +1,37 @@
-import { useState } from "react";
+import { Route, Routes, Navigate } from "react-router-dom";
+import { useAuthStore } from "./stores/auth.store";
+import ProtectedRoute from "./components/common/ProtectedRoute";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Dashboard from "./pages/Dashboard";
+import Projects from "./pages/Projects";
+import ProjectDetail from "./pages/ProjectDetail";
+import Chat from "./pages/Chat";
 
 export default function App() {
-  const [count, setCount] = useState(0);
+  const token = useAuthStore((s) => s.token);
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <div className="max-w-xl w-full p-8">
-        <h1 className="text-3xl font-bold">ReqNexa AI</h1>
-        <p className="mt-2 text-gray-600">Intelligent requirement-gathering for software projects.</p>
-        <div className="mt-6 flex items-center gap-3">
-          <button
-            className="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700"
-            onClick={() => setCount((c) => c + 1)}
-          >
-            Clicks: {count}
-          </button>
-          <span className="text-sm text-gray-500">Tailwind + React + Vite</span>
-        </div>
-      </div>
-    </div>
+    <Routes>
+      <Route path="/" element={<Navigate to={token ? "/dashboard" : "/login"} replace />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+      <Route
+        path="/dashboard"
+        element={<ProtectedRoute><Dashboard /></ProtectedRoute>}
+      />
+      <Route
+        path="/projects"
+        element={<ProtectedRoute><Projects /></ProtectedRoute>}
+      />
+      <Route
+        path="/projects/:id"
+        element={<ProtectedRoute><ProjectDetail /></ProtectedRoute>}
+      />
+      <Route
+        path="/chat/:id"
+        element={<ProtectedRoute><Chat /></ProtectedRoute>}
+      />
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
   );
 }
-
