@@ -5,7 +5,7 @@ import Sidebar from "./Sidebar";
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false);
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 dark:text-gray-100">
       <Header onToggle={() => setOpen((o) => !o)} />
       <div className="flex">
         <Sidebar open={open} onClose={() => setOpen(false)} />

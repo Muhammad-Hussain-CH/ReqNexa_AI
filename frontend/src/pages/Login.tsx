@@ -28,7 +28,7 @@ export default function Login() {
     }
   }
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 dark:text-gray-100">
       <form className="w-full max-w-sm space-y-4 bg-white p-6 rounded shadow" onSubmit={onSubmit}>
         <h1 className="text-2xl font-semibold text-center">Sign in to ReqNexa</h1>
         {error && <div className="text-red-600 text-sm">{error}</div>}
