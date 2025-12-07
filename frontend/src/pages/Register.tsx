@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 
 function strength(pw: string) {
   let s = 0;
-  if (pw.length >= 8) s++;
+  if (pw.length >= 6) s++;
   if (/[A-Z]/.test(pw)) s++;
   if (/[a-z]/.test(pw)) s++;
   if (/[0-9]/.test(pw)) s++;
@@ -34,9 +34,10 @@ export default function Register() {
       await apiRegister({ email, password, name });
       toast.success("Registered successfully");
       location.assign("/login");
-    } catch {
-      toast.error("Registration failed");
-      setError("Unable to register");
+    } catch (e: any) {
+      const msg = e?.response?.data?.error || e?.message || "Registration failed";
+      toast.error(msg);
+      setError(msg);
     }
   }
   return (
@@ -54,10 +55,12 @@ export default function Register() {
         </div>
         <div>
           <label className="text-sm text-gray-600">Password</label>
+          <div className="text-xs text-gray-500">Use at least 6 characters. Adding uppercase, lowercase, numbers, and symbols increases strength.</div>
           <Input placeholder="••••••••" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
           <div className="mt-1 h-2 bg-gray-200 rounded">
             <div className={`h-2 rounded ${s<=2?"bg-red-500":s===3?"bg-yellow-500":"bg-green-500"}`} style={{ width: `${(s/5)*100}%` }} />
           </div>
+          <div className="mt-1 text-xs text-gray-600">Strength: {Math.round((s/5)*100)}%</div>
         </div>
         <div>
           <label className="text-sm text-gray-600">Confirm password</label>

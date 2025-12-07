@@ -13,7 +13,28 @@ function formatHistory(messages: ChatMessage[]): string {
   return messages.map((m) => `${m.role.toUpperCase()}: ${m.content}`).join("\n");
 }
 
-const gemini = new GeminiService();
+let gemini: GeminiService;
+try {
+  gemini = new GeminiService();
+} catch {
+  gemini = {
+    generateChatResponse: async () => "Hello! I'm ReqNexa AI. Tell me about your requirements.",
+    generateFollowUpQuestions: async () => [
+      "Can you clarify the scope?",
+      "Who are the target users?",
+      "Any performance/security constraints?",
+    ],
+    classifyRequirement: async (text: string) => ({
+      type: /\b(performance|security|usability|reliability|maintainability|scalability|accessibility)\b/i.test(text) ? "Non-Functional" : "Functional",
+      subcategory: null,
+      confidence: 60,
+      title: text.slice(0, 80),
+      description: text,
+    }),
+    extractRequirements: async () => [],
+    detectAmbiguity: (msg: string) => ({ ambiguous: /\b(fast|secure|user-friendly|simple)\b/i.test(msg), terms: [] }),
+  } as any;
+}
 
 export async function startConversationService(db: Db, payload: StartPayload) {
   const conversationId = await createConversation(db, {

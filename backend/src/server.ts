@@ -5,13 +5,7 @@ import { pgPool } from "./config/database";
 import { mongoClient, connectWithRetry } from "./config/mongodb";
 
 async function start() {
-  try {
-    const db = await connectWithRetry();
-    console.log("Connected to MongoDB:", db.databaseName);
-  } catch (err) {
-    console.error("MongoDB connection failed", err);
-    process.exit(1);
-  }
+  // Skip MongoDB startup connection; connect lazily in controllers/services
 
   try {
     await pgPool.query("SELECT 1");

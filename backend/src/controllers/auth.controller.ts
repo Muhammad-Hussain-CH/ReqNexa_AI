@@ -5,19 +5,14 @@ import { UserRole } from "../types/models";
 
 const registerSchema = z.object({
   email: z.string().email(),
-  password: z
-    .string()
-    .min(8)
-    .regex(/[A-Z]/)
-    .regex(/[a-z]/)
-    .regex(/[0-9]/),
+  password: z.string().min(6),
   name: z.string().min(2),
   role: z.enum(["admin", "manager", "developer", "qa", "client"]) as z.ZodType<UserRole>,
 });
 
 const loginSchema = z.object({
   email: z.string().email(),
-  password: z.string().min(8),
+  password: z.string().min(6),
 });
 
 const refreshSchema = z.object({

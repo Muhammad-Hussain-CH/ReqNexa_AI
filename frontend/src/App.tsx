@@ -7,6 +7,7 @@ import Dashboard from "./pages/Dashboard";
 import Projects from "./pages/Projects";
 import ProjectDetail from "./pages/ProjectDetail";
 import Documents from "./pages/Documents";
+import Admin from "./pages/Admin";
 import Chat from "./pages/Chat";
 
 export default function App() {
@@ -31,6 +32,10 @@ export default function App() {
       <Route
         path="/projects/:id/documents"
         element={<ProtectedRoute><Documents /></ProtectedRoute>}
+      />
+      <Route
+        path="/admin"
+        element={<ProtectedRoute><Admin /></ProtectedRoute>}
       />
       <Route
         path="/chat/:id"
