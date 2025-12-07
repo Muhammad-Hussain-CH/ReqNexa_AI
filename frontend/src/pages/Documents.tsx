@@ -65,9 +65,9 @@ export default function Documents() {
             <span>/</span>
             <span>Documents</span>
           </div>
-          <Link to={`/projects/${id}`} className="px-3 py-1.5 rounded border">Back</Link>
+          <Link to={`/projects/${id}`} className="px-3 py-1.5 rounded border dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">Back</Link>
         </div>
-        <div className="rounded border bg-white overflow-x-auto">
+        <div className="rounded border bg-white dark:bg-gray-800 dark:border-gray-700 overflow-x-auto">
           {isLoading && (
             <div className="p-4">Loading...</div>
           )}
@@ -77,7 +77,7 @@ export default function Documents() {
           {!isLoading && !error && (
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b">
+                <tr className="border-b dark:border-gray-700">
                   <th className="p-2 text-left">Filename</th>
                   <th className="p-2 text-left">Format</th>
                   <th className="p-2 text-left">Size</th>
@@ -87,22 +87,22 @@ export default function Documents() {
               </thead>
               <tbody>
                 {items.map((d) => (
-                  <tr key={d.document_id} className="border-b">
+                  <tr key={d.document_id} className="border-b dark:border-gray-700">
                     <td className="p-2">{d.filename}</td>
                     <td className="p-2">{d.format.toUpperCase()}</td>
                     <td className="p-2">{Math.round(d.size / 1024)} KB</td>
                     <td className="p-2">{new Date(d.created_at).toLocaleString()}</td>
                     <td className="p-2">
                       <div className="flex items-center gap-2">
-                        <button className="px-2 py-1 rounded border" onClick={() => onDownload(d)}>Download</button>
-                        <button className="px-2 py-1 rounded border" onClick={() => onDelete(d)}>Delete</button>
+                        <button className="px-2 py-1 rounded border dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700" onClick={() => onDownload(d)}>Download</button>
+                        <button className="px-2 py-1 rounded border dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700" onClick={() => onDelete(d)}>Delete</button>
                       </div>
                     </td>
                   </tr>
                 ))}
                 {items.length === 0 && (
                   <tr>
-                    <td className="p-4 text-center text-gray-600" colSpan={5}>No documents yet.</td>
+                    <td className="p-4 text-center text-gray-600 dark:text-gray-400" colSpan={5}>No documents yet.</td>
                   </tr>
                 )}
               </tbody>
@@ -113,4 +113,3 @@ export default function Documents() {
     </DashboardLayout>
   );
 }
-

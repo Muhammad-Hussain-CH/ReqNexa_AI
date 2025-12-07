@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import DashboardLayout from "../components/layout/DashboardLayout";
 import { getProjectById } from "../services/project.service";
@@ -19,6 +19,9 @@ export default function ProjectDetail() {
   const [bulkOpen, setBulkOpen] = useState(false);
   const [bulkIds, setBulkIds] = useState<string[]>([]);
   const [docOpen, setDocOpen] = useState(false);
+  const nameRef = useRef<HTMLInputElement | null>(null);
+  const typeRef = useRef<HTMLSelectElement | null>(null);
+  const descRef = useRef<HTMLTextAreaElement | null>(null);
   useEffect(() => {
     (async () => { if (id) { const res = await getProjectById(id); setProject(res.project ?? res); } })();
   }, [id]);
@@ -37,12 +40,12 @@ export default function ProjectDetail() {
             <span>{project?.name || "Project"}</span>
           </div>
           <div className="flex items-center gap-2">
-            <button className="px-3 py-1.5 rounded border hover:bg-gray-50" onClick={() => setDocOpen(true)}>Generate Document</button>
-            <Link to={`/projects/${id}/documents`} className="px-3 py-1.5 rounded border hover:bg-gray-50">Documents</Link>
-            <button className="px-3 py-1.5 rounded border hover:bg-gray-50">Share</button>
+            <button className="px-3 py-1.5 rounded border dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700" onClick={() => setDocOpen(true)}>Generate Document</button>
+            <Link to={`/projects/${id}/documents`} className="px-3 py-1.5 rounded border dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">Documents</Link>
+            <button className="px-3 py-1.5 rounded border dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700" onClick={() => navigator.clipboard.writeText(location.href)}>Share</button>
           </div>
         </div>
-        <div className="flex items-center gap-2 border-b">
+        <div className="flex items-center gap-2 border-b dark:border-gray-700">
           {[
             { k: "overview", t: "Overview" },
             { k: "requirements", t: "Requirements" },
@@ -50,20 +53,20 @@ export default function ProjectDetail() {
             { k: "team", t: "Team" },
             { k: "settings", t: "Settings" },
           ].map((x) => (
-            <button key={x.k} onClick={() => setTab(x.k)} className={`px-3 py-2 ${tab === x.k ? "border-b-2 border-primary text-primary" : "text-gray-600"}`}>{x.t}</button>
+            <button key={x.k} onClick={() => setTab(x.k)} className={`px-3 py-2 ${tab === x.k ? "border-b-2 border-primary text-primary" : "text-gray-600 dark:text-gray-300"}`}>{x.t}</button>
           ))}
         </div>
         {tab === "overview" && (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-            <div className="lg:col-span-1 rounded border bg-white p-4">
+            <div className="lg:col-span-1 rounded border bg-white dark:bg-gray-800 dark:border-gray-700 p-4">
               <div className="font-semibold">Project Info</div>
-              <div className="text-sm text-gray-600 mt-2">Name: {project?.name}</div>
-              <div className="text-sm text-gray-600">Type: {project?.type}</div>
-              <div className="text-sm text-gray-600">Description: {project?.description || ""}</div>
-              <div className="text-sm text-gray-600">Created: {new Date().toLocaleDateString()}</div>
+              <div className="text-sm text-gray-600 dark:text-gray-400 mt-2">Name: {project?.name}</div>
+              <div className="text-sm text-gray-600 dark:text-gray-400">Type: {project?.type}</div>
+              <div className="text-sm text-gray-600 dark:text-gray-400">Description: {project?.description || ""}</div>
+              <div className="text-sm text-gray-600 dark:text-gray-400">Created: {new Date().toLocaleDateString()}</div>
             </div>
             <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="rounded border bg-white p-4">
+              <div className="rounded border bg-white dark:bg-gray-800 dark:border-gray-700 p-4">
                 <div className="font-semibold mb-2">Functional vs Non-functional</div>
                 <div className="h-48">
                   <ResponsiveContainer>
@@ -77,7 +80,7 @@ export default function ProjectDetail() {
                   </ResponsiveContainer>
                 </div>
               </div>
-              <div className="rounded border bg-white p-4">
+              <div className="rounded border bg-white dark:bg-gray-800 dark:border-gray-700 p-4">
                 <div className="font-semibold mb-2">By Priority</div>
                 <div className="h-48">
                   <ResponsiveContainer>
@@ -89,7 +92,7 @@ export default function ProjectDetail() {
                   </ResponsiveContainer>
                 </div>
               </div>
-              <div className="rounded border bg-white p-4 md:col-span-2">
+              <div className="rounded border bg-white dark:bg-gray-800 dark:border-gray-700 p-4 md:col-span-2">
                 <div className="font-semibold mb-2">By Status</div>
                 <div className="h-48">
                   <ResponsiveContainer>
@@ -129,11 +132,11 @@ export default function ProjectDetail() {
         )}
         {tab === "chat" && (
           <div className="space-y-2">
-            <div className="rounded border bg-white p-4">
+            <div className="rounded border bg-white dark:bg-gray-800 dark:border-gray-700 p-4">
               <div className="font-semibold mb-2">Conversations</div>
               <div className="space-y-2">
                 {Array.from({ length: 5 }).map((_, i) => (
-                  <button key={i} className="w-full text-left px-3 py-2 rounded border hover:bg-gray-50" onClick={() => navigate(`/chat/${id}`)}>Conversation {i + 1}</button>
+                  <button key={i} className="w-full text-left px-3 py-2 rounded border dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700" onClick={() => navigate(`/chat/${id}`)}>Conversation {i + 1}</button>
                 ))}
               </div>
             </div>
@@ -143,15 +146,15 @@ export default function ProjectDetail() {
           <div className="space-y-2">
             <div className="flex items-center justify-between">
               <div className="text-lg font-semibold">Team Members</div>
-              <button className="px-3 py-1.5 rounded border">Add Member</button>
+              <button className="px-3 py-1.5 rounded border dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">Add Member</button>
             </div>
-            <div className="rounded border bg-white">
+            <div className="rounded border bg-white dark:bg-gray-800 dark:border-gray-700">
               <table className="w-full text-sm">
                 <tbody>
                   {Array.from({ length: 4 }).map((_, i) => (
-                    <tr key={i} className="border-b">
+                    <tr key={i} className="border-b dark:border-gray-700">
                       <td className="p-2">Member {i + 1}</td>
-                      <td className="p-2 text-right"><button className="px-3 py-1 rounded border">Remove</button></td>
+                      <td className="p-2 text-right"><button className="px-3 py-1 rounded border dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">Remove</button></td>
                     </tr>
                   ))}
                 </tbody>
@@ -161,25 +164,75 @@ export default function ProjectDetail() {
         )}
         {tab === "settings" && (
           <div className="space-y-3">
-            <div className="rounded border bg-white p-4">
+            <div className="rounded border bg-white dark:bg-gray-800 dark:border-gray-700 p-4">
               <div className="font-semibold">Edit Project</div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-2">
-                <input className="px-3 py-2 border rounded" defaultValue={project?.name} />
-                <select className="px-3 py-2 border rounded" defaultValue={project?.type}><option value="web">Web</option><option value="mobile">Mobile</option><option value="desktop">Desktop</option><option value="api">API</option><option value="other">Other</option></select>
-                <textarea className="px-3 py-2 border rounded md:col-span-2" rows={4} defaultValue={project?.description || ""} />
+                <input ref={nameRef} className="px-3 py-2 border rounded dark:bg-gray-800 dark:border-gray-700" defaultValue={project?.name} />
+                <select ref={typeRef} className="px-3 py-2 border rounded dark:bg-gray-800 dark:border-gray-700" defaultValue={project?.type}><option value="web">Web</option><option value="mobile">Mobile</option><option value="desktop">Desktop</option><option value="api">API</option><option value="other">Other</option></select>
+                <textarea ref={descRef} className="px-3 py-2 border rounded md:col-span-2 dark:bg-gray-800 dark:border-gray-700" rows={4} defaultValue={project?.description || ""} />
               </div>
-              <div className="mt-3 flex items-center gap-2"><button className="px-3 py-1.5 rounded bg-primary text-white">Save</button></div>
+              <div className="mt-3 flex items-center gap-2"><SaveButton id={id as string} nameRef={nameRef} typeRef={typeRef} descRef={descRef} setProject={setProject} /></div>
             </div>
-            <div className="rounded border bg-white p-4">
+            <div className="rounded border bg-white dark:bg-gray-800 dark:border-gray-700 p-4">
               <div className="font-semibold">Danger Zone</div>
               <div className="mt-2 flex items-center gap-2">
-                <button className="px-3 py-1.5 rounded border">Archive Project</button>
-                <button className="px-3 py-1.5 rounded border text-red-600">Delete Project</button>
+                <button className="px-3 py-1.5 rounded border dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700" onClick={() => navigator.clipboard.writeText(location.href)}>Share Link</button>
+                <DeleteProjectButton id={id as string} onDeleted={() => navigate("/projects")} />
               </div>
-            </div>
           </div>
-        )}
+        </div>
+      )}
       </div>
     </DashboardLayout>
+  );
+}
+
+function SaveButton({ id, nameRef, typeRef, descRef, setProject }: { id: string; nameRef: React.RefObject<HTMLInputElement>; typeRef: React.RefObject<HTMLSelectElement>; descRef: React.RefObject<HTMLTextAreaElement>; setProject: (p: any) => void }) {
+  const { updateProject } = useProjectStore();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  async function onClick() {
+    setError(null);
+    setLoading(true);
+    try {
+      const name = nameRef.current?.value || undefined;
+      const description = (descRef.current?.value ?? "") || undefined;
+      const res = await updateProject(id, { name, description: description === undefined ? undefined : description });
+      setProject(res.project ?? res);
+    } catch (e: any) {
+      setError(e?.response?.data?.error || e?.message || "Failed to save");
+    } finally {
+      setLoading(false);
+    }
+  }
+  return (
+    <>
+      {error && <span className="text-sm text-red-600">{error}</span>}
+      <button className="px-3 py-1.5 rounded bg-primary text-white" onClick={onClick} disabled={loading}>{loading ? "Saving..." : "Save Changes"}</button>
+    </>
+  );
+}
+
+function DeleteProjectButton({ id, onDeleted }: { id: string; onDeleted: () => void }) {
+  const { deleteProject } = useProjectStore();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  async function onClick() {
+    setError(null);
+    setLoading(true);
+    try {
+      await deleteProject(id);
+      onDeleted();
+    } catch (e: any) {
+      setError(e?.response?.data?.error || e?.message || "Failed to delete");
+    } finally {
+      setLoading(false);
+    }
+  }
+  return (
+    <>
+      {error && <span className="text-sm text-red-600 mr-2">{error}</span>}
+      <button className="px-3 py-1.5 rounded border border-red-600 text-red-600 hover:bg-red-50" onClick={onClick} disabled={loading}>{loading ? "Deleting..." : "Delete Project"}</button>
+    </>
   );
 }

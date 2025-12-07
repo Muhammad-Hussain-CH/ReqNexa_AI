@@ -1,6 +1,7 @@
 import { useLocation, Link } from "react-router-dom";
 import { Home, Folder, BarChart3, Settings, LogOut } from "lucide-react";
 import { useAuthStore } from "../../stores/auth.store";
+import logoPng from "../../../logo/logo.png";
 
 export default function Sidebar({ open, onClose }: { open?: boolean; onClose?: () => void }) {
   const { pathname } = useLocation();
@@ -8,12 +9,18 @@ export default function Sidebar({ open, onClose }: { open?: boolean; onClose?: (
   const nav = [
     { to: "/dashboard", label: "Dashboard", icon: Home },
     { to: "/projects", label: "Projects", icon: Folder },
-    { to: "/analytics", label: "Analytics", icon: BarChart3 },
+    { to: "/admin", label: "Analytics", icon: BarChart3 },
     { to: "/settings", label: "Settings", icon: Settings },
   ];
   return (
-    <aside className={`${open ? "translate-x-0" : "-translate-x-full md:translate-x-0"} md:w-64 w-64 shrink-0 border-r dark:border-gray-700 h[calc(100vh-56px)] p-4 text-sm bg-white dark:bg-gray-800 fixed md:static top-14 left-0 transition-transform duration-300`}> 
-      <div className="font-bold text-lg mb-4">ReqNexa</div>
+    <aside className={`${open ? "translate-x-0" : "-translate-x-full md:translate-x-0"} md:w-64 w-64 shrink-0 border-r dark:border-gray-700 h-[calc(100vh-56px)] p-4 text-sm bg-white dark:bg-gray-800 fixed md:static top-14 left-0 transition-transform duration-300`}> 
+      <div className="font-bold text-lg mb-4 flex items-center gap-2">
+        <picture>
+          <source srcSet={logoPng} type="image/png" />
+          <img src="/reqnexa-logo.svg" alt="ReqNexa" className="w-6 h-6" />
+        </picture>
+        ReqNexa
+      </div>
       <nav className="space-y-1">
         {nav.map((n) => {
           const Icon = n.icon;

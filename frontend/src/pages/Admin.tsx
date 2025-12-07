@@ -48,8 +48,8 @@ export default function Admin() {
           <UserTable />
         )}
         {tab === "projects" && (
-          <div className="rounded border bg-white p-4">
-            <div className="text-gray-600">All Projects view can be implemented similarly to users table (owner, type, requirements count, status, created). For now, use the Projects page for detailed management.</div>
+          <div className="rounded border bg-white dark:bg-gray-800 dark:border-gray-700 p-4">
+            <div className="text-gray-600 dark:text-gray-300">All Projects view can be implemented similarly to users table (owner, type, requirements count, status, created). For now, use the Projects page for detailed management.</div>
           </div>
         )}
         {tab === "analytics" && (
@@ -65,37 +65,37 @@ export default function Admin() {
               <button className="ml-auto px-3 py-1.5 rounded border" onClick={() => window.print()}>Export</button>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="rounded border bg-white p-4">
+              <div className="rounded border bg-white dark:bg-gray-800 dark:border-gray-700 p-4">
                 <div className="text-sm text-gray-600">Total Users</div>
                 <div className="text-2xl font-semibold">{analyticsLoading ? "…" : analytics?.users?.total ?? 0}</div>
               </div>
-              <div className="rounded border bg-white p-4">
+              <div className="rounded border bg-white dark:bg-gray-800 dark:border-gray-700 p-4">
                 <div className="text-sm text-gray-600">Active Users (24h)</div>
                 <div className="text-2xl font-semibold">{analyticsLoading ? "…" : analytics?.users?.active_users?.last_24h ?? 0}</div>
               </div>
-              <div className="rounded border bg-white p-4">
+              <div className="rounded border bg-white dark:bg-gray-800 dark:border-gray-700 p-4">
                 <div className="text-sm text-gray-600">Total Projects</div>
                 <div className="text-2xl font-semibold">{analyticsLoading ? "…" : analytics?.projects?.total ?? 0}</div>
               </div>
-              <div className="rounded border bg-white p-4">
+              <div className="rounded border bg-white dark:bg-gray-800 dark:border-gray-700 p-4">
                 <div className="text-sm text-gray-600">Total Requirements</div>
                 <div className="text-2xl font-semibold">{analyticsLoading ? "…" : analytics?.requirements?.total ?? 0}</div>
               </div>
-              <div className="rounded border bg-white p-4">
+              <div className="rounded border bg-white dark:bg-gray-800 dark:border-gray-700 p-4">
                 <div className="text-sm text-gray-600">Storage Used</div>
                 <div className="text-2xl font-semibold">{systemLoading ? "…" : Math.round((systemHealth?.storage?.used_bytes || 0) / 1024 / 1024)} MB</div>
               </div>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="rounded border bg-white p-4">
+              <div className="rounded border bg-white dark:bg-gray-800 dark:border-gray-700 p-4">
                 <div className="font-semibold mb-2">Users by Role</div>
                 <AnalyticsChart type="pie" data={(analytics?.users?.by_role || []).map((r: any) => ({ name: r.role, value: r.count }))} />
               </div>
-              <div className="rounded border bg-white p-4">
+              <div className="rounded border bg-white dark:bg-gray-800 dark:border-gray-700 p-4">
                 <div className="font-semibold mb-2">Projects by Status</div>
                 <AnalyticsChart type="pie" data={(analytics?.projects?.by_status || []).map((r: any) => ({ name: r.status, value: r.count }))} />
               </div>
-              <div className="rounded border bg-white p-4">
+              <div className="rounded border bg-white dark:bg-gray-800 dark:border-gray-700 p-4">
                 <div className="font-semibold mb-2">Requirements by Type</div>
                 <AnalyticsChart type="bar" data={(analytics?.requirements?.by_type || []).map((r: any) => ({ name: r.type, value: r.count }))} />
               </div>
@@ -107,21 +107,21 @@ export default function Admin() {
         )}
         {tab === "health" && (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="rounded border bg-white p-4">
+            <div className="rounded border bg-white dark:bg-gray-800 dark:border-gray-700 p-4">
               <div className="font-semibold">Database Status</div>
-              <div className="text-sm mt-2">PostgreSQL: {systemLoading ? "…" : (systemHealth?.database?.postgres ? "OK" : "Down")}</div>
-              <div className="text-sm">MongoDB: {systemLoading ? "…" : (systemHealth?.database?.mongo ? "OK" : "Down")}</div>
+              <div className="text-sm mt-2 dark:text-gray-300">PostgreSQL: {systemLoading ? "…" : (systemHealth?.database?.postgres ? "OK" : "Down")}</div>
+              <div className="text-sm dark:text-gray-300">MongoDB: {systemLoading ? "…" : (systemHealth?.database?.mongo ? "OK" : "Down")}</div>
             </div>
-            <div className="rounded border bg-white p-4">
+            <div className="rounded border bg-white dark:bg-gray-800 dark:border-gray-700 p-4">
               <div className="font-semibold">API Status</div>
-              <div className="text-sm mt-2">Provider: {systemLoading ? "…" : systemHealth?.ai_provider?.name || "-"}</div>
-              <div className="text-sm">Status: {systemLoading ? "…" : systemHealth?.ai_provider?.status || "unknown"}</div>
+              <div className="text-sm mt-2 dark:text-gray-300">Provider: {systemLoading ? "…" : systemHealth?.ai_provider?.name || "-"}</div>
+              <div className="text-sm dark:text-gray-300">Status: {systemLoading ? "…" : systemHealth?.ai_provider?.status || "unknown"}</div>
             </div>
-            <div className="rounded border bg-white p-4">
+            <div className="rounded border bg-white dark:bg-gray-800 dark:border-gray-700 p-4">
               <div className="font-semibold">Server Health</div>
-              <div className="text-sm mt-2">Memory Used: {systemLoading ? "…" : Math.round(((systemHealth?.server?.memory?.used || 0) / (systemHealth?.server?.memory?.total || 1)) * 100)}%</div>
-              <div className="text-sm">CPU Load: {systemLoading ? "…" : (systemHealth?.server?.cpuLoad || []).map((x: number) => x.toFixed(2)).join(", ")}</div>
-              <div className="text-sm">Last Checked: {systemLoading ? "…" : new Date(systemHealth?.checked_at || Date.now()).toLocaleString()}</div>
+              <div className="text-sm mt-2 dark:text-gray-300">Memory Used: {systemLoading ? "…" : Math.round(((systemHealth?.server?.memory?.used || 0) / (systemHealth?.server?.memory?.total || 1)) * 100)}%</div>
+              <div className="text-sm dark:text-gray-300">CPU Load: {systemLoading ? "…" : (systemHealth?.server?.cpuLoad || []).map((x: number) => x.toFixed(2)).join(", ")}</div>
+              <div className="text-sm dark:text-gray-300">Last Checked: {systemLoading ? "…" : new Date(systemHealth?.checked_at || Date.now()).toLocaleString()}</div>
             </div>
           </div>
         )}
@@ -129,4 +129,3 @@ export default function Admin() {
     </DashboardLayout>
   );
 }
-

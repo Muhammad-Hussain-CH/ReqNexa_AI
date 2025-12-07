@@ -9,7 +9,15 @@ import { authRouter } from "./routes/auth.routes";
 const app = express();
 
 app.use(helmet());
-app.use(cors({ origin: env.CORS_ORIGIN, credentials: true }));
+const origins = env.CORS_ORIGIN.split(",").map((s) => s.trim()).filter(Boolean);
+const corsConfig = {
+  origin: origins,
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+};
+app.use(cors(corsConfig));
+app.options("*", cors(corsConfig));
 app.use(express.json());
 
 app.use("/api/health", healthRouter);

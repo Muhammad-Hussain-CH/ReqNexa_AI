@@ -18,7 +18,7 @@ export default function Dashboard() {
       <div className="space-y-6">
         <div>
           <h1 className="text-2xl font-semibold">Welcome back, {user?.name || "User"}</h1>
-          <p className="text-gray-600">Here’s a quick overview of your workspace.</p>
+          <p className="text-gray-600 dark:text-gray-300">Here’s a quick overview of your workspace.</p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <StatCard title="Active Projects" value={3} color="primary" />

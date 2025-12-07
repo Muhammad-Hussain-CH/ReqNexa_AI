@@ -4,6 +4,7 @@ import Button from "../components/common/Button";
 import { register as apiRegister } from "../services/auth.service";
 import { toast } from "react-hot-toast";
 import { Link } from "react-router-dom";
+import logoPng from "../../logo/logo.png";
 
 function strength(pw: string) {
   let s = 0;
@@ -42,33 +43,39 @@ export default function Register() {
   }
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 dark:text-gray-100">
-      <form className="w-full max-w-sm space-y-4 bg-white p-6 rounded shadow" onSubmit={onSubmit}>
+      <form className="w-full max-w-sm space-y-4 bg-white dark:bg-gray-800 p-6 rounded shadow" onSubmit={onSubmit}>
+        <div className="w-full flex justify-center">
+          <picture>
+            <source srcSet={logoPng} type="image/png" />
+            <img src="/reqnexa-logo.svg" alt="ReqNexa AI" className="w-12 h-12" />
+          </picture>
+        </div>
         <h1 className="text-2xl font-semibold text-center">Create your account</h1>
         {error && <div className="text-red-600 text-sm">{error}</div>}
         <div>
-          <label className="text-sm text-gray-600">Name</label>
+          <label className="text-sm text-gray-600 dark:text-gray-300">Name</label>
           <Input placeholder="Your name" value={name} onChange={(e) => setName(e.target.value)} />
         </div>
         <div>
-          <label className="text-sm text-gray-600">Email</label>
+          <label className="text-sm text-gray-600 dark:text-gray-300">Email</label>
           <Input placeholder="you@example.com" value={email} onChange={(e) => setEmail(e.target.value)} />
         </div>
         <div>
-          <label className="text-sm text-gray-600">Password</label>
-          <div className="text-xs text-gray-500">Use at least 6 characters. Adding uppercase, lowercase, numbers, and symbols increases strength.</div>
+          <label className="text-sm text-gray-600 dark:text-gray-300">Password</label>
+          <div className="text-xs text-gray-500 dark:text-gray-400">Use at least 6 characters. Adding uppercase, lowercase, numbers, and symbols increases strength.</div>
           <Input placeholder="••••••••" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-          <div className="mt-1 h-2 bg-gray-200 rounded">
+          <div className="mt-1 h-2 bg-gray-200 dark:bg-gray-700 rounded">
             <div className={`h-2 rounded ${s<=2?"bg-red-500":s===3?"bg-yellow-500":"bg-green-500"}`} style={{ width: `${(s/5)*100}%` }} />
           </div>
-          <div className="mt-1 text-xs text-gray-600">Strength: {Math.round((s/5)*100)}%</div>
+          <div className="mt-1 text-xs text-gray-600 dark:text-gray-400">Strength: {Math.round((s/5)*100)}%</div>
         </div>
         <div>
-          <label className="text-sm text-gray-600">Confirm password</label>
+          <label className="text-sm text-gray-600 dark:text-gray-300">Confirm password</label>
           <Input placeholder="••••••••" type="password" value={confirm} onChange={(e) => setConfirm(e.target.value)} />
         </div>
-        <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={terms} onChange={(e) => setTerms(e.target.checked)} /> I agree to the terms</label>
+        <label className="flex items-center gap-2 text-sm dark:text-gray-300"><input type="checkbox" checked={terms} onChange={(e) => setTerms(e.target.checked)} /> I agree to the terms</label>
         <Button type="submit">Create Account</Button>
-        <div className="text-center text-sm">Already have an account? <Link to="/login" className="text-primary">Login</Link></div>
+        <div className="text-center text-sm dark:text-gray-300">Already have an account? <Link to="/login" className="text-primary">Login</Link></div>
       </form>
     </div>
   );

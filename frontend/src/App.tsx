@@ -9,6 +9,7 @@ import ProjectDetail from "./pages/ProjectDetail";
 import Documents from "./pages/Documents";
 import Admin from "./pages/Admin";
 import Chat from "./pages/Chat";
+import Settings from "./pages/Settings";
 
 export default function App() {
   const token = useAuthStore((s) => s.token);
@@ -30,16 +31,12 @@ export default function App() {
         element={<ProtectedRoute><ProjectDetail /></ProtectedRoute>}
       />
       <Route
-        path="/projects/:id/documents"
-        element={<ProtectedRoute><Documents /></ProtectedRoute>}
-      />
-      <Route
         path="/admin"
         element={<ProtectedRoute><Admin /></ProtectedRoute>}
       />
       <Route
-        path="/chat/:id"
-        element={<ProtectedRoute><Chat /></ProtectedRoute>}
+        path="/settings"
+        element={<ProtectedRoute><Settings /></ProtectedRoute>}
       />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

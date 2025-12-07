@@ -11,7 +11,7 @@ export default function StatCard({ title, value, icon, color = "primary" }: Prop
       <div className="flex items-center gap-3">
         {icon && <div className={`w-10 h-10 rounded ${bg} grid place-items-center ${text}`}>{icon}</div>}
         <div>
-          <div className="text-sm text-gray-500">{title}</div>
+          <div className="text-sm text-gray-500 dark:text-gray-400">{title}</div>
           <div className="text-2xl font-semibold mt-1">{value}</div>
         </div>
       </div>

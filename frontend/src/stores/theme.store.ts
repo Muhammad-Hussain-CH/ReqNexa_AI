@@ -30,3 +30,11 @@ export const useThemeStore = create<ThemeState>()(
     { name: "reqnexa-theme" }
   )
 );
+
+if (typeof window !== "undefined") {
+  const unsub = useThemeStore.subscribe(() => {
+    try { useThemeStore.getState().apply(); } catch {}
+  });
+  // Optional: unsubscribe on page unload to avoid leaks
+  window.addEventListener("beforeunload", () => { try { unsub(); } catch {} });
+}
