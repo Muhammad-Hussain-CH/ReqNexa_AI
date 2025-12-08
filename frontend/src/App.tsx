@@ -10,6 +10,8 @@ import Documents from "./pages/Documents";
 import Admin from "./pages/Admin";
 import Chat from "./pages/Chat";
 import Settings from "./pages/Settings";
+import Profile from "./pages/Profile";
+import Reports from "./pages/Reports";
 
 export default function App() {
   const token = useAuthStore((s) => s.token);
@@ -35,8 +37,20 @@ export default function App() {
         element={<ProtectedRoute><Admin /></ProtectedRoute>}
       />
       <Route
+        path="/chat"
+        element={<ProtectedRoute><Chat /></ProtectedRoute>}
+      />
+      <Route
         path="/settings"
         element={<ProtectedRoute><Settings /></ProtectedRoute>}
+      />
+      <Route
+        path="/reports"
+        element={<ProtectedRoute><Reports /></ProtectedRoute>}
+      />
+      <Route
+        path="/profile"
+        element={<ProtectedRoute><Profile /></ProtectedRoute>}
       />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

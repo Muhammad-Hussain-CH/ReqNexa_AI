@@ -1,4 +1,3 @@
-import { Db } from "mongodb";
 import { pgPool } from "../config/database";
 import { insertDocument, listDocumentsByProject, getDocumentById, deleteDocumentById } from "../models/document.model";
 import fs from "fs";
@@ -22,7 +21,7 @@ function toHtml(content: string) {
 }
 
 export class DocumentGenerator {
-  constructor(private db: Db) {}
+  constructor() {}
 
   async generateSRS(projectId: string, formatType: "pdf" | "docx" | "html", options: { include_toc?: boolean; include_glossary?: boolean; include_traceability?: boolean; template?: "ieee" | "agile" } = {}) {
     const projRes = await pgPool.query("SELECT id, name, type, description, status, created_at, updated_at FROM projects WHERE id=$1", [projectId]);
@@ -89,7 +88,7 @@ export class DocumentGenerator {
       size = (await fs.promises.stat(filepath)).size;
     }
 
-    const id = await insertDocument(this.db, { project_id: projectId, filename: path.basename(filepath), format: outputFormat, size, path: filepath });
+    const id = await insertDocument({ project_id: projectId, filename: path.basename(filepath), format: outputFormat, size, path: filepath });
     const download_url = `/api/documents/${id}/download`;
     return { document_id: id, filename: path.basename(filepath), format: outputFormat, size, download_url };
   }
@@ -102,7 +101,7 @@ export class DocumentGenerator {
     const filename = `UserStories_${Date.now()}.json`;
     const filepath = path.join(baseDir, filename);
     await writeFile(filepath, JSON.stringify(stories, null, 2), "utf-8");
-    const id = await insertDocument(this.db, { project_id: projectId, filename, format: "json", size: (await fs.promises.stat(filepath)).size, path: filepath });
+    const id = await insertDocument({ project_id: projectId, filename, format: "json", size: (await fs.promises.stat(filepath)).size, path: filepath });
     return { document_id: id, filename, format: "json", size: (await fs.promises.stat(filepath)).size, download_url: `/api/documents/${id}/download` };
   }
 
@@ -127,25 +126,25 @@ export class DocumentGenerator {
       await writeFile(filepath, `<?xml version="1.0" encoding="UTF-8"?><requirements>${rows}</requirements>`, "utf-8");
     }
     const size = (await fs.promises.stat(filepath)).size;
-    const id = await insertDocument(this.db, { project_id: projectId, filename, format, size, path: filepath });
+    const id = await insertDocument({ project_id: projectId, filename, format, size, path: filepath });
     return { document_id: id, filename, format, size, download_url: `/api/documents/${id}/download` };
   }
 
   async list(projectId: string) {
-    const docs = await listDocumentsByProject(this.db, projectId);
-    return docs.map((d) => ({ document_id: d._id as string, filename: d.filename, format: d.format, size: d.size, created_at: d.created_at, download_url: `/api/documents/${d._id}/download` }));
+    const docs = await listDocumentsByProject(projectId);
+    return docs.map((d: any) => ({ document_id: d.id as string, filename: d.filename, format: d.format, size: d.size, created_at: d.created_at, download_url: `/api/documents/${d.id}/download` }));
   }
 
   async get(documentId: string) {
-    const doc = await getDocumentById(this.db, documentId);
+    const doc = await getDocumentById(documentId);
     if (!doc) throw new Error("Not Found");
     return doc;
   }
 
   async delete(documentId: string) {
-    const doc = await getDocumentById(this.db, documentId);
+    const doc = await getDocumentById(documentId);
     if (!doc) return;
     try { await fs.promises.unlink(doc.path); } catch {}
-    await deleteDocumentById(this.db, documentId);
+    await deleteDocumentById(documentId);
   }
 }

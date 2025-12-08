@@ -8,6 +8,9 @@ logs/
 dist/
 build/
 coverage/
+**/.next/
+.next/
+req-nexa-ai-chatbot-ui-2/.next/
 
 # Env files
 .env
@@ -25,4 +28,3 @@ Thumbs.db
 # Misc
 .tmp/
 .cache/
-

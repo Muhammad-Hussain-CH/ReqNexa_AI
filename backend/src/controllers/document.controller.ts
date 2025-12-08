@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import { z } from "zod";
-import { connectWithRetry } from "../config/mongodb";
 import { DocumentGenerator } from "../services/document.service";
 
 export async function generateDocument(req: Request, res: Response) {
@@ -13,8 +12,7 @@ export async function generateDocument(req: Request, res: Response) {
       template: z.enum(["ieee","agile"]).optional(),
       options: z.object({ include_toc: z.boolean().optional(), include_glossary: z.boolean().optional(), include_traceability: z.boolean().optional(), include_diagrams: z.boolean().optional() }).optional(),
     }).parse(req.body);
-    const db = await connectWithRetry();
-    const gen = new DocumentGenerator(db);
+    const gen = new DocumentGenerator();
     let result: any;
     if (body.type === "srs") {
       result = await gen.generateSRS(body.project_id, body.format as any, { ...(body.options || {}), template: (body.template as any) || "ieee" });
@@ -33,8 +31,7 @@ export async function listDocuments(req: Request, res: Response) {
   try {
     const userId = req.user?.id; if (!userId) return res.status(401).json({ error: "Unauthorized" });
     const project_id = z.string().uuid().parse(req.params.project_id);
-    const db = await connectWithRetry();
-    const gen = new DocumentGenerator(db);
+    const gen = new DocumentGenerator();
     const docs = await gen.list(project_id);
     res.json({ documents: docs });
   } catch (err: any) { res.status(400).json({ error: err.message || "Bad Request" }); }
@@ -44,8 +41,7 @@ export async function downloadDocument(req: Request, res: Response) {
   try {
     const userId = req.user?.id; if (!userId) return res.status(401).json({ error: "Unauthorized" });
     const document_id = z.string().parse(req.params.document_id);
-    const db = await connectWithRetry();
-    const gen = new DocumentGenerator(db);
+    const gen = new DocumentGenerator();
     const doc = await gen.get(document_id);
     const ext = doc.format.toLowerCase();
     const mime = ext === "pdf" ? "application/pdf" : ext === "docx" ? "application/vnd.openxmlformats-officedocument.wordprocessingml.document" : ext === "html" ? "text/html" : ext === "csv" ? "text/csv" : ext === "json" ? "application/json" : ext === "xml" ? "application/xml" : "application/octet-stream";
@@ -59,8 +55,7 @@ export async function deleteDocument(req: Request, res: Response) {
   try {
     const userId = req.user?.id; if (!userId) return res.status(401).json({ error: "Unauthorized" });
     const document_id = z.string().parse(req.params.document_id);
-    const db = await connectWithRetry();
-    const gen = new DocumentGenerator(db);
+    const gen = new DocumentGenerator();
     await gen.delete(document_id);
     res.json({ success: true });
   } catch (err: any) { res.status(400).json({ error: err.message || "Bad Request" }); }

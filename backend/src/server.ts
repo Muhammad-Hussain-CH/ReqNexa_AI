@@ -2,10 +2,9 @@ import "dotenv/config";
 import { createApp } from "./app";
 import { env } from "./lib/env";
 import { pgPool } from "./config/database";
-import { mongoClient, connectWithRetry } from "./config/mongodb";
 
 async function start() {
-  // Skip MongoDB startup connection; connect lazily in controllers/services
+  // MongoDB removed: only PostgreSQL is used
 
   try {
     await pgPool.query("SELECT 1");
@@ -25,7 +24,6 @@ async function start() {
     server.close(async () => {
       try {
         await pgPool.end();
-        await mongoClient.close();
         console.log("Connections closed. Bye.");
         process.exit(0);
       } catch (err) {

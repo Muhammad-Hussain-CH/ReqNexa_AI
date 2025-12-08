@@ -38,10 +38,10 @@ export default function Projects() {
 
   return (
     <DashboardLayout>
-      <div className="space-y-4">
+      <div className="space-y-4 bg-gradient-to-br from-background via-background to-blue-950/10 p-2 md:p-4 rounded-lg">
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-semibold">My Projects</h1>
-          <button className="px-3 py-2 rounded bg-primary text-white flex items-center gap-2" onClick={() => setOpen(true)}><Plus className="w-4 h-4" /> New Project</button>
+          <button className="px-3 py-2 rounded bg-blue-500 hover:bg-blue-600 text-white flex items-center gap-2" onClick={() => setOpen(true)}><Plus className="w-4 h-4" /> New Project</button>
         </div>
         <div className="flex flex-wrap items-center gap-3">
           <div className="flex items-center px-3 py-2 border rounded bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
@@ -71,7 +71,7 @@ export default function Projects() {
         ) : (
           <div className="space-y-2">
             {sorted.map((p) => (
-              <div key={p.id} className="rounded border bg-white dark:bg-gray-800 dark:border-gray-700 p-4 flex items-center justify-between">
+              <div key={p.id} className="rounded-lg border border-border/50 bg-gradient-to-br from-blue-950/20 via-background to-blue-900/10 p-4 flex items-center justify-between">
                 <div>
                   <div className="font-semibold">{p.name}</div>
                   <div className="text-xs text-gray-500 dark:text-gray-400">{p.type}</div>

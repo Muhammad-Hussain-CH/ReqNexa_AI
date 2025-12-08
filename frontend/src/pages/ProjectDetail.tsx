@@ -58,7 +58,7 @@ export default function ProjectDetail() {
         </div>
         {tab === "overview" && (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-            <div className="lg:col-span-1 rounded border bg-white dark:bg-gray-800 dark:border-gray-700 p-4">
+            <div className="lg:col-span-1 rounded-lg border border-border/50 bg-gradient-to-br from-blue-950/20 via-background to-blue-900/10 p-6">
               <div className="font-semibold">Project Info</div>
               <div className="text-sm text-gray-600 dark:text-gray-400 mt-2">Name: {project?.name}</div>
               <div className="text-sm text-gray-600 dark:text-gray-400">Type: {project?.type}</div>
@@ -66,7 +66,7 @@ export default function ProjectDetail() {
               <div className="text-sm text-gray-600 dark:text-gray-400">Created: {new Date().toLocaleDateString()}</div>
             </div>
             <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="rounded border bg-white dark:bg-gray-800 dark:border-gray-700 p-4">
+              <div className="rounded-lg border border-border/50 bg-gradient-to-br from-blue-950/20 via-background to-blue-900/10 p-6">
                 <div className="font-semibold mb-2">Functional vs Non-functional</div>
                 <div className="h-48">
                   <ResponsiveContainer>
@@ -80,7 +80,7 @@ export default function ProjectDetail() {
                   </ResponsiveContainer>
                 </div>
               </div>
-              <div className="rounded border bg-white dark:bg-gray-800 dark:border-gray-700 p-4">
+              <div className="rounded-lg border border-border/50 bg-gradient-to-br from-blue-950/20 via-background to-blue-900/10 p-6">
                 <div className="font-semibold mb-2">By Priority</div>
                 <div className="h-48">
                   <ResponsiveContainer>
@@ -92,7 +92,7 @@ export default function ProjectDetail() {
                   </ResponsiveContainer>
                 </div>
               </div>
-              <div className="rounded border bg-white dark:bg-gray-800 dark:border-gray-700 p-4 md:col-span-2">
+              <div className="rounded-lg border border-border/50 bg-gradient-to-br from-blue-950/20 via-background to-blue-900/10 p-6 md:col-span-2">
                 <div className="font-semibold mb-2">By Status</div>
                 <div className="h-48">
                   <ResponsiveContainer>
@@ -132,7 +132,7 @@ export default function ProjectDetail() {
         )}
         {tab === "chat" && (
           <div className="space-y-2">
-            <div className="rounded border bg-white dark:bg-gray-800 dark:border-gray-700 p-4">
+            <div className="rounded-lg border border-border/50 bg-gradient-to-br from-blue-950/20 via-background to-blue-900/10 p-6">
               <div className="font-semibold mb-2">Conversations</div>
               <div className="space-y-2">
                 {Array.from({ length: 5 }).map((_, i) => (
@@ -148,7 +148,7 @@ export default function ProjectDetail() {
               <div className="text-lg font-semibold">Team Members</div>
               <button className="px-3 py-1.5 rounded border dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">Add Member</button>
             </div>
-            <div className="rounded border bg-white dark:bg-gray-800 dark:border-gray-700">
+            <div className="rounded-lg border border-border/50 bg-gradient-to-br from-blue-950/20 via-background to-blue-900/10">
               <table className="w-full text-sm">
                 <tbody>
                   {Array.from({ length: 4 }).map((_, i) => (
@@ -164,7 +164,7 @@ export default function ProjectDetail() {
         )}
         {tab === "settings" && (
           <div className="space-y-3">
-            <div className="rounded border bg-white dark:bg-gray-800 dark:border-gray-700 p-4">
+            <div className="rounded-lg border border-border/50 bg-gradient-to-br from-blue-950/20 via-background to-blue-900/10 p-6">
               <div className="font-semibold">Edit Project</div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-2">
                 <input ref={nameRef} className="px-3 py-2 border rounded dark:bg-gray-800 dark:border-gray-700" defaultValue={project?.name} />
@@ -173,7 +173,7 @@ export default function ProjectDetail() {
               </div>
               <div className="mt-3 flex items-center gap-2"><SaveButton id={id as string} nameRef={nameRef} typeRef={typeRef} descRef={descRef} setProject={setProject} /></div>
             </div>
-            <div className="rounded border bg-white dark:bg-gray-800 dark:border-gray-700 p-4">
+            <div className="rounded-lg border border-border/50 bg-gradient-to-br from-blue-950/20 via-background to-blue-900/10 p-6">
               <div className="font-semibold">Danger Zone</div>
               <div className="mt-2 flex items-center gap-2">
                 <button className="px-3 py-1.5 rounded border dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700" onClick={() => navigator.clipboard.writeText(location.href)}>Share Link</button>

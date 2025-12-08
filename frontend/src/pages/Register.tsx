@@ -4,7 +4,6 @@ import Button from "../components/common/Button";
 import { register as apiRegister } from "../services/auth.service";
 import { toast } from "react-hot-toast";
 import { Link } from "react-router-dom";
-import logoPng from "../../logo/logo.png";
 
 function strength(pw: string) {
   let s = 0;
@@ -44,12 +43,7 @@ export default function Register() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 dark:text-gray-100">
       <form className="w-full max-w-sm space-y-4 bg-white dark:bg-gray-800 p-6 rounded shadow" onSubmit={onSubmit}>
-        <div className="w-full flex justify-center">
-          <picture>
-            <source srcSet={logoPng} type="image/png" />
-            <img src="/reqnexa-logo.svg" alt="ReqNexa AI" className="w-12 h-12" />
-          </picture>
-        </div>
+        
         <h1 className="text-2xl font-semibold text-center">Create your account</h1>
         {error && <div className="text-red-600 text-sm">{error}</div>}
         <div>

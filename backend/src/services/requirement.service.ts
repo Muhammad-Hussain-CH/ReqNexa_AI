@@ -14,10 +14,11 @@ async function withRetry<T>(fn: () => Promise<T>, max = 3) {
   }
 }
 
-let gemini: GeminiService;
-try {
+const useRemote = Boolean(process.env.GEMINI_API_KEY);
+let gemini: GeminiService | { classifyRequirement: (requirementText: string) => Promise<{ type: string; subcategory: null; confidence: number; title: string; description: string }> };
+if (useRemote) {
   gemini = new GeminiService();
-} catch {
+} else {
   gemini = {
     classifyRequirement: async (requirementText: string) => ({
       type: /\b(performance|security|usability|reliability|maintainability|scalability|accessibility)\b/i.test(requirementText) ? "Non-Functional" : "Functional",

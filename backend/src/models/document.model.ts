@@ -1,8 +1,7 @@
-import { Db } from "mongodb";
-import { getCollection } from "../config/mongodb";
+import { pgPool } from "../config/database";
 
 export interface DocumentRecord {
-  _id?: string;
+  id?: string;
   project_id: string;
   filename: string;
   format: string;
@@ -11,29 +10,30 @@ export interface DocumentRecord {
   created_at: Date;
 }
 
-const DOCS = "documents";
-
-export async function insertDocument(db: Db, doc: Omit<DocumentRecord, "_id" | "created_at">) {
-  const col = getCollection<DocumentRecord>(db, DOCS);
-  const res = await col.insertOne({ ...doc, created_at: new Date() });
-  return String(res.insertedId);
+export async function insertDocument(doc: Omit<DocumentRecord, "id" | "created_at">) {
+  const res = await pgPool.query(
+    `INSERT INTO documents (project_id, filename, format, size, path) VALUES ($1, $2, $3, $4, $5) RETURNING id`,
+    [doc.project_id, doc.filename, doc.format, doc.size, doc.path]
+  );
+  return res.rows[0].id as string;
 }
 
-export async function listDocumentsByProject(db: Db, project_id: string): Promise<DocumentRecord[]> {
-  const col = getCollection<DocumentRecord>(db, DOCS);
-  const docs = await col.find({ project_id }).sort({ created_at: -1 }).toArray();
-  return docs as DocumentRecord[];
+export async function listDocumentsByProject(project_id: string): Promise<DocumentRecord[]> {
+  const res = await pgPool.query(
+    `SELECT id, project_id, filename, format, size, path, created_at FROM documents WHERE project_id=$1 ORDER BY created_at DESC`,
+    [project_id]
+  );
+  return res.rows as any;
 }
 
-export async function getDocumentById(db: Db, id: string): Promise<DocumentRecord | null> {
-  const col = getCollection<DocumentRecord>(db, DOCS);
-  // eslint-disable-next-line
-  const doc = await col.findOne({ _id: (global as any).ObjectId ? new (global as any).ObjectId(id) : undefined } as any) as any;
-  // Fall back to string _id
-  return doc || (await col.findOne({ _id: id } as any)) as any;
+export async function getDocumentById(id: string): Promise<DocumentRecord | null> {
+  const res = await pgPool.query(
+    `SELECT id, project_id, filename, format, size, path, created_at FROM documents WHERE id=$1`,
+    [id]
+  );
+  return (res.rows[0] as any) || null;
 }
 
-export async function deleteDocumentById(db: Db, id: string) {
-  const col = getCollection<DocumentRecord>(db, DOCS);
-  await col.deleteOne({ _id: id } as any);
+export async function deleteDocumentById(id: string) {
+  await pgPool.query(`DELETE FROM documents WHERE id=$1`, [id]);
 }

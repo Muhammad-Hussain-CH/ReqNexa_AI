@@ -14,7 +14,6 @@ const envSchema = z.object({
   POSTGRES_USER: z.string().default("reqnexa"),
   POSTGRES_PASSWORD: z.string().default("reqnexa"),
   POSTGRES_DB: z.string().default("reqnexa"),
-  MONGODB_URI: z.string().default("mongodb://localhost:27017/reqnexa"),
 });
 
 export const env = envSchema.parse(process.env);

@@ -15,12 +15,10 @@ services:
       - POSTGRES_USER=${POSTGRES_USER:-reqnexa}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-reqnexa}
       - POSTGRES_DB=${POSTGRES_DB:-reqnexa}
-      - MONGODB_URI=mongodb://mongo:27017/reqnexa
     ports:
       - "4000:4000"
     depends_on:
       - postgres
-      - mongo
 
   frontend:
     build:
@@ -45,14 +43,6 @@ services:
     ports:
       - "5432:5432"
 
-  mongo:
-    image: mongo:7
-    volumes:
-      - mongodata:/data/db
-    ports:
-      - "27017:27017"
 
 volumes:
   pgdata:
-  mongodata:
-

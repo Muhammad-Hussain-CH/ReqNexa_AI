@@ -4,7 +4,6 @@ import Button from "../components/common/Button";
 import { useAuthStore } from "../stores/auth.store";
 import { toast } from "react-hot-toast";
 import { Link } from "react-router-dom";
-import logoPng from "../../logo/logo.png";
 
 export default function Login() {
   const { login, isLoading, checkAuth, isAuthenticated } = useAuthStore();
@@ -31,13 +30,8 @@ export default function Login() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 dark:text-gray-100">
       <form className="w-full max-w-sm space-y-4 bg-white dark:bg-gray-800 p-6 rounded shadow" onSubmit={onSubmit}>
-        <div className="w-full flex justify-center">
-          <picture>
-            <source srcSet={logoPng} type="image/png" />
-            <img src="/reqnexa-logo.svg" alt="ReqNexa AI" className="w-12 h-12" />
-          </picture>
-        </div>
-        <h1 className="text-2xl font-semibold text-center">Sign in to ReqNexa</h1>
+        <h1 className="text-2xl font-semibold text-center">Welcome Back</h1>
+        <div className="text-center text-gray-600 dark:text-gray-300">Sign in to ReqNexa</div>
         {error && <div className="text-red-600 text-sm">{error}</div>}
         <div>
           <label className="text-sm text-gray-600 dark:text-gray-300">Email</label>

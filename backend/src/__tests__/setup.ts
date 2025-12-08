@@ -27,15 +27,4 @@ jest.mock("../services/gemini.service", () => {
   return { GeminiService: GeminiServiceMock };
 });
 
-jest.mock("../config/mongodb", () => {
-  return {
-    connectWithRetry: jest.fn(async () => ({
-      collection: () => ({
-        insertOne: async () => ({ insertedId: "abc123" }),
-        updateMany: async () => ({}),
-        find: () => ({ sort: () => ({ limit: () => ({ toArray: async () => [] }) }) }),
-      }),
-    })),
-    mongoClient: { close: async () => {} },
-  };
-});
+// MongoDB removed; no mocks needed

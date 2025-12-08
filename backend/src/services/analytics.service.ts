@@ -2,7 +2,6 @@ import fs from "fs";
 import path from "path";
 import os from "os";
 import { pgPool } from "../config/database";
-import { connectWithRetry } from "../config/mongodb";
 
 export async function getUserStats() {
   const byRole = await pgPool.query("SELECT role, COUNT(*)::int AS count FROM users GROUP BY role");
@@ -58,19 +57,16 @@ function getDirectorySize(dir: string): number {
 
 export async function getSystemHealth() {
   let postgres = false;
-  let mongo = false;
   try { await pgPool.query("SELECT 1"); postgres = true; } catch { postgres = false; }
-  try { const db = await connectWithRetry(); mongo = !!db; } catch { mongo = false; }
   const memory = { total: os.totalmem(), free: os.freemem(), used: os.totalmem() - os.freemem() };
   const cpuLoad = os.loadavg();
   const storageDir = path.join(process.cwd(), "storage");
   const storageUsed = getDirectorySize(storageDir);
   return {
-    database: { postgres, mongo },
+    database: { postgres },
     ai_provider: { name: "gemini", status: "unknown" },
     server: { memory, cpuLoad },
     storage: { used_bytes: storageUsed },
     checked_at: new Date().toISOString(),
   };
 }
-

@@ -3,11 +3,11 @@ import { createApp } from "../../src/app";
 import { generateJWT } from "../../src/utils/password.utils";
 
 jest.mock("../../src/services/chat.service", () => ({
-  startConversationService: async (_db: any, _payload: any) => ({ conversation_id: "c1", first_message: "Hello from mocked Gemini", message_id: "m1" }),
-  sendMessageService: async (_db: any, _payload: any) => ({ bot_response: "Hello from mocked Gemini", suggested_replies: [], extracted_requirement: null }),
-  getConversationService: async (_db: any, _cid: string) => ({ messages: [] }),
-  resumeConversationService: async (_db: any, _cid: string) => ({ message: "Hello from mocked Gemini" }),
-  getConversationsService: async (_db: any, _user_id: string, _project_id: string | null) => ({ conversations: [] }),
+  startConversationService: async (_payload: any) => ({ conversation_id: "c1", first_message: "Hello from mocked Gemini", message_id: "m1" }),
+  sendMessageService: async (_payload: any) => ({ bot_response: "Hello from mocked Gemini", suggested_replies: [], extracted_requirement: null }),
+  getConversationService: async (_cid: string) => ({ messages: [] }),
+  resumeConversationService: async (_cid: string) => ({ message: "Hello from mocked Gemini" }),
+  getConversationsService: async (_user_id: string, _project_id: string | null) => ({ conversations: [] }),
 }));
 
 describe("Chat API", () => {

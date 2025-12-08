@@ -1,6 +1,5 @@
 import { pgPool } from "../config/database";
 import { ProjectStatus, ProjectType } from "../types/models";
-import { connectWithRetry } from "../config/mongodb";
 
 type CreateProjectInput = { name: string; type: ProjectType; description: string | null };
 
@@ -140,8 +139,6 @@ export async function deleteProjectService(userId: string, projectId: string, ip
     `UPDATE projects SET status = 'archived'::project_status_enum, updated_at = now() WHERE id = $1`,
     [projectId]
   );
-  const db = await connectWithRetry();
-  await db.collection("conversations").updateMany({ project_id: projectId }, { $set: { archived: true, updated_at: new Date() } });
   await pgPool.query(
     `INSERT INTO activity_logs (user_id, action, entity_type, entity_id, metadata, ip_address)
      VALUES ($1, $2, $3, $4, $5::jsonb, $6)`,

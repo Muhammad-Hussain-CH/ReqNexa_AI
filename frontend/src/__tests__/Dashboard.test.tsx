@@ -8,7 +8,7 @@ describe("Dashboard Page", () => {
   test("Renders dashboard layout and shows user name", () => {
     useAuthStore.setState({ user: { id: "u1", email: "a@b.com", name: "Alice", role: "client" } as any });
     render(
-      <MemoryRouter>
+      <MemoryRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         <Dashboard />
       </MemoryRouter>
     );
@@ -17,7 +17,7 @@ describe("Dashboard Page", () => {
 
   test("Displays project stats and recent projects", () => {
     const { container } = render(
-      <MemoryRouter>
+      <MemoryRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         <Dashboard />
       </MemoryRouter>
     );

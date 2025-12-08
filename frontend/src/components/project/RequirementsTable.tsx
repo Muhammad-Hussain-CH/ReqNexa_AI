@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import { Edit, Trash } from "lucide-react";
 import { Requirement } from "../../types";
 
@@ -112,7 +113,10 @@ export default function RequirementsTable({ items, isLoading, error, onRetry, on
 
       {!isLoading && !error && paged.length === 0 && (
         <div className="h-48 grid place-items-center text-gray-500 dark:text-gray-400">
-          No requirements yet. Start a conversation to gather requirements.
+          <div className="text-center">
+            <div className="mb-2">No requirements yet. Start a conversation to gather requirements.</div>
+            <Link to="/chat" className="inline-block px-3 py-1.5 rounded bg-primary text-white">Start Conversation</Link>
+          </div>
         </div>
       )}
 
